@@ -1,10 +1,13 @@
-// Game constants
-const GRAVITY = 0.4;
-const FLAP_STRENGTH = -7;
-const PIPE_SPEED = 3.2;
-const PIPE_GAP = 155;
+// Game constants - designed for 60fps, scaled by delta time for consistency
+const TARGET_FPS = 60;
+const FRAME_TIME = 1000 / TARGET_FPS;  // 16.67ms per frame at 60fps
+const GRAVITY = 0.4;                   // Gentle gravity
+const FLAP_STRENGTH = -6.5;            // Strong enough flap to gain height
+const MAX_FALL_SPEED = 8;              // Terminal velocity
+const PIPE_SPEED = 2.5;                // Pixels per frame (at 60fps)
+const PIPE_GAP = 150;                  // Generous gap between pipes
 const PIPE_WIDTH = 80;
-const PIPE_SPAWN_RATE = 1400;
+const PIPE_SPACING = 220;              // Horizontal distance between pipes
 const BIRD_SIZE = 40;
 
 // Game state
@@ -15,7 +18,6 @@ let score = 0;
 let highScore = localStorage.getItem('flappyHighScore') || 0;
 let gameState = 'splash'; // 'splash', 'start', 'playing', 'gameover'
 let splashStartTime = 0;
-let lastPipeSpawn = 0;
 let groundY;
 let isNewHighScore = false;
 let celebrationParticles = [];
@@ -75,7 +77,6 @@ function resetGame() {
     };
     pipes = [];
     score = 0;
-    lastPipeSpawn = 0;
     isNewHighScore = false;
     celebrationParticles = [];
 }
@@ -108,29 +109,52 @@ function spawnPipe() {
     });
 }
 
+function spawnFirstPipe() {
+    // Spawn first pipe closer to the bird for immediate action
+    const minHeight = 80;
+    const maxHeight = groundY - PIPE_GAP - minHeight;
+    const topHeight = Math.random() * (maxHeight - minHeight) + minHeight;
+    
+    pipes.push({
+        x: canvas.width * 0.5, // Start at middle of screen
+        topHeight: topHeight,
+        passed: false
+    });
+}
+
 function update(deltaTime) {
     // Always update celebration particles
     updateCelebration();
     
     if (gameState !== 'playing') return;
     
-    // Update bird
-    bird.velocity += GRAVITY;
-    bird.y += bird.velocity;
+    // Spawn first pipe immediately when game starts
+    if (pipes.length === 0) {
+        spawnFirstPipe();
+    }
+    
+    // Calculate delta multiplier for consistent speed across refresh rates
+    // Clamp to prevent huge jumps if tab was inactive
+    const dt = Math.min(deltaTime, 100) / FRAME_TIME;
+    
+    // Update bird physics scaled by delta time
+    bird.velocity += GRAVITY * dt;
+    if (bird.velocity > MAX_FALL_SPEED) {
+        bird.velocity = MAX_FALL_SPEED;
+    }
+    bird.y += bird.velocity * dt;
     
     // Bird rotation based on velocity
-    bird.rotation = Math.min(Math.max(bird.velocity * 3, -30), 90);
+    bird.rotation = Math.min(Math.max(bird.velocity * 4, -25), 90);
     
-    // Spawn pipes
-    const now = Date.now();
-    if (now - lastPipeSpawn > PIPE_SPAWN_RATE) {
+    // Spawn new pipe when last pipe is far enough from right edge (distance-based like original)
+    if (pipes.length === 0 || pipes[pipes.length - 1].x < canvas.width - PIPE_SPACING) {
         spawnPipe();
-        lastPipeSpawn = now;
     }
     
     // Update pipes
     for (let i = pipes.length - 1; i >= 0; i--) {
-        pipes[i].x -= PIPE_SPEED;
+        pipes[i].x -= PIPE_SPEED * dt;
         
         // Score when passing pipe
         if (!pipes[i].passed && pipes[i].x + PIPE_WIDTH < bird.x) {
