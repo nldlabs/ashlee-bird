@@ -1,10 +1,10 @@
 // Game constants
-const GRAVITY = 0.35;
-const FLAP_STRENGTH = -6.5;
-const PIPE_SPEED = 2.5;
-const PIPE_GAP = 160;
+const GRAVITY = 0.4;
+const FLAP_STRENGTH = -7;
+const PIPE_SPEED = 3.2;
+const PIPE_GAP = 155;
 const PIPE_WIDTH = 80;
-const PIPE_SPAWN_RATE = 1500;
+const PIPE_SPAWN_RATE = 1400;
 const BIRD_SIZE = 40;
 
 // Game state
