@@ -1,8 +1,8 @@
 const CACHE_NAME = 'ashlee-bird-v1';
 const urlsToCache = [
-  './',
-  './index.html',
-  './game.js'
+  '/',
+  '/index.html',
+  '/game.js'
 ];
 
 // Install event - cache files

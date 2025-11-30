@@ -2,7 +2,7 @@
   "name": "Ashlee Bird",
   "short_name": "Ashlee Bird",
   "description": "A Flappy Bird clone made with love for Ashlee",
-  "start_url": "./",
+  "start_url": "/",
   "display": "fullscreen",
   "orientation": "portrait",
   "background_color": "#fecfef",
