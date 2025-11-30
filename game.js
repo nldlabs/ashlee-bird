@@ -1,13 +1,13 @@
 // Game constants - designed for 60fps, scaled by delta time for consistency
 const TARGET_FPS = 60;
 const FRAME_TIME = 1000 / TARGET_FPS;  // 16.67ms per frame at 60fps
-const GRAVITY = 0.6;                   // Heavier gravity
-const FLAP_STRENGTH = -8;              // Stronger flap to compensate
-const MAX_FALL_SPEED = 12;             // Falls faster
-const PIPE_SPEED = 4;                  // Much faster pipes
-const PIPE_GAP = 115;                  // Tighter gap (original was 120)
+const GRAVITY = 0.55;                  // Balanced gravity
+const FLAP_STRENGTH = -7.5;            // Good flap strength
+const MAX_FALL_SPEED = 10;             // Reasonable fall speed
+const PIPE_SPEED = 3.2;                // Slightly slower
+const PIPE_GAP = 125;                  // Challenging but fair gap
 const PIPE_WIDTH = 80;
-const PIPE_SPACING = 180;              // Closer together
+const PIPE_SPACING = 200;              // Bit more breathing room
 const BIRD_SIZE = 40;
 
 // Game state
@@ -116,7 +116,7 @@ function spawnFirstPipe() {
     const topHeight = Math.random() * (maxHeight - minHeight) + minHeight;
     
     pipes.push({
-        x: canvas.width * 0.5, // Start at middle of screen
+        x: canvas.width * 0.65, // More room to line up on mobile
         topHeight: topHeight,
         passed: false
     });
