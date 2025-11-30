@@ -1,13 +1,13 @@
 // Game constants - designed for 60fps, scaled by delta time for consistency
 const TARGET_FPS = 60;
 const FRAME_TIME = 1000 / TARGET_FPS;  // 16.67ms per frame at 60fps
-const GRAVITY = 0.4;                   // Gentle gravity
-const FLAP_STRENGTH = -6.5;            // Strong enough flap to gain height
-const MAX_FALL_SPEED = 8;              // Terminal velocity
-const PIPE_SPEED = 2.5;                // Pixels per frame (at 60fps)
-const PIPE_GAP = 150;                  // Generous gap between pipes
+const GRAVITY = 0.6;                   // Heavier gravity
+const FLAP_STRENGTH = -8;              // Stronger flap to compensate
+const MAX_FALL_SPEED = 12;             // Falls faster
+const PIPE_SPEED = 4;                  // Much faster pipes
+const PIPE_GAP = 115;                  // Tighter gap (original was 120)
 const PIPE_WIDTH = 80;
-const PIPE_SPACING = 220;              // Horizontal distance between pipes
+const PIPE_SPACING = 180;              // Closer together
 const BIRD_SIZE = 40;
 
 // Game state
