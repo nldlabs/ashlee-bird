@@ -8,6 +8,7 @@ const PIPE_SPEED = 3.2;                // Slightly slower
 const PIPE_GAP = 125;                  // Challenging but fair gap
 const PIPE_WIDTH = 80;
 const PIPE_SPACING = 200;              // Bit more breathing room
+const MAX_HEIGHT_DIFF = 150;           // Max vertical change between pipes
 const BIRD_SIZE = 40;
 
 // Game state
@@ -19,6 +20,7 @@ let highScore = localStorage.getItem('flappyHighScore') || 0;
 let gameState = 'splash'; // 'splash', 'start', 'playing', 'gameover'
 let splashStartTime = 0;
 let groundY;
+let lastPipeHeight = null;
 let isNewHighScore = false;
 let celebrationParticles = [];
 
@@ -78,6 +80,7 @@ function resetGame() {
     pipes = [];
     score = 0;
     isNewHighScore = false;
+    lastPipeHeight = null;
     celebrationParticles = [];
 }
 
@@ -100,7 +103,19 @@ function handleInput(e) {
 function spawnPipe() {
     const minHeight = 80;
     const maxHeight = groundY - PIPE_GAP - minHeight;
-    const topHeight = Math.random() * (maxHeight - minHeight) + minHeight;
+    
+    let topHeight;
+    if (lastPipeHeight === null) {
+        // First pipe - random
+        topHeight = Math.random() * (maxHeight - minHeight) + minHeight;
+    } else {
+        // Cap the height difference from last pipe
+        const minNext = Math.max(minHeight, lastPipeHeight - MAX_HEIGHT_DIFF);
+        const maxNext = Math.min(maxHeight, lastPipeHeight + MAX_HEIGHT_DIFF);
+        topHeight = Math.random() * (maxNext - minNext) + minNext;
+    }
+    
+    lastPipeHeight = topHeight;
     
     pipes.push({
         x: canvas.width,
@@ -114,6 +129,8 @@ function spawnFirstPipe() {
     const minHeight = 80;
     const maxHeight = groundY - PIPE_GAP - minHeight;
     const topHeight = Math.random() * (maxHeight - minHeight) + minHeight;
+    
+    lastPipeHeight = topHeight;
     
     pipes.push({
         x: canvas.width * 0.65, // More room to line up on mobile
