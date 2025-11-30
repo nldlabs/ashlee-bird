@@ -1,18 +1,8 @@
 # 🐦 Ashlee Bird
 
-A Flappy Bird clone made with love for Ashlee.
+A Flappy Bird clone made with love for my girlfriend, Ashlee.
 
 **Play now:** [ashlee-bird.nldlabs.cloud](https://ashlee-bird.nldlabs.cloud)
-
-## Features
-
-- 🎮 Classic Flappy Bird gameplay
-- 📱 Works on mobile and desktop (touch, click, or spacebar)
-- 🖥️ Fullscreen responsive canvas
-- 💾 High score saved locally
-- 🎉 Celebration effects for new high scores
-- 📲 Installable as a PWA (Add to Home Screen)
-- 📴 Works offline
 
 ## Tech
 
@@ -24,4 +14,4 @@ Just host the files on any static hosting (GitHub Pages, Netlify, Vercel, Cloudf
 
 ## License
 
-MIT - do whatever you want with it! 💕
+MIT - do whatever you want with it! 
